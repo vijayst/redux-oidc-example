@@ -1,13 +1,27 @@
 import React from 'react';
+import thunk from '../../thunk';
+import { connect } from 'react-redux';
 
-function Root(props) {
-  return (
-    <div style={styles.paper}>
-      <div style={styles.content}>
-        { props.children }
+class Root extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(thunk());
+  }
+
+  render() {
+    return (
+      <div style={styles.paper}>
+        <div style={styles.content}>
+          { this.props.children }
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch
+  };
 }
 
 const styles = {
@@ -23,4 +37,4 @@ const styles = {
   }
 }
 
-export default Root;
+export default connect(null, mapDispatchToProps)(Root);

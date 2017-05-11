@@ -8572,7 +8572,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// you'll need this for older browsers
-	__webpack_require__(598).polyfill();
+	__webpack_require__(599).polyfill();
 	
 	var styles = {
 	  root: {
@@ -9190,7 +9190,7 @@
 
 /***/ }),
 /* 304 */
-[601, 305],
+[602, 305],
 /* 305 */
 /***/ (function(module, exports) {
 
@@ -15144,7 +15144,7 @@
 
 /***/ }),
 /* 352 */
-[601, 337],
+[602, 337],
 /* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -43391,14 +43391,16 @@
 	    key: 'componentWillMount',
 	
 	    // load the subscriptions
-	    value: function componentWillMount() {
-	      this.setState({ loading: true });
-	      this.props.dispatch((0, _actions.loadSubscriptionsStart)());
-	      // .then(() => {
-	      //     console.log('promise is working.');
-	      //     this.setState({ loading: false });
-	      // });
-	    }
+	    value: function componentWillMount() {}
+	    /*
+	    this.setState({ loading: true });
+	    this.props.dispatch(loadSubscriptionsStart())
+	    .then(() => {
+	        console.log('Promise is working.');
+	        this.setState({ loading: false });
+	    });
+	    */
+	
 	
 	    // display the current user
 	
@@ -43532,7 +43534,6 @@
 	    return (0, _isomorphicFetch2.default)(url).then(function (response) {
 	      return response.json();
 	    }).then(function (result) {
-	      console.log(result);
 	      var channels = [];
 	      var _iteratorNormalCompletion = true;
 	      var _didIteratorError = false;
@@ -43737,22 +43738,62 @@
 	  value: true
 	});
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _react = __webpack_require__(299);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _thunk = __webpack_require__(598);
+	
+	var _thunk2 = _interopRequireDefault(_thunk);
+	
+	var _reactRedux = __webpack_require__(481);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function Root(props) {
-	  return _react2.default.createElement(
-	    'div',
-	    { style: styles.paper },
-	    _react2.default.createElement(
-	      'div',
-	      { style: styles.content },
-	      props.children
-	    )
-	  );
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Root = function (_React$Component) {
+	  _inherits(Root, _React$Component);
+	
+	  function Root() {
+	    _classCallCheck(this, Root);
+	
+	    return _possibleConstructorReturn(this, (Root.__proto__ || Object.getPrototypeOf(Root)).apply(this, arguments));
+	  }
+	
+	  _createClass(Root, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.props.dispatch((0, _thunk2.default)());
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { style: styles.paper },
+	        _react2.default.createElement(
+	          'div',
+	          { style: styles.content },
+	          this.props.children
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Root;
+	}(_react2.default.Component);
+	
+	function mapDispatchToProps(dispatch) {
+	  return {
+	    dispatch: dispatch
+	  };
 	}
 	
 	var styles = {
@@ -43768,10 +43809,43 @@
 	  }
 	};
 	
-	exports.default = Root;
+	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Root);
 
 /***/ }),
 /* 598 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = thunk;
+	
+	var example = function example() {
+	  return new Promise(function (resolve) {
+	    resolve();
+	  });
+	};
+	
+	function thunk() {
+	  return function (dispatch) {
+	    example().then(function () {
+	      dispatch({
+	        type: 'PROMISE_SUCCESS',
+	        payload: 'Promise worked!'
+	      });
+	    }).then(function () {
+	      dispatch({
+	        type: 'CHAINED_PROMISE_SUCESS',
+	        payload: 'Chained promise success!'
+	      });
+	    });
+	  };
+	}
+
+/***/ }),
+/* 599 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var require;/* WEBPACK VAR INJECTION */(function(process, global) {/*!
@@ -43906,7 +43980,7 @@
 	function attemptVertx() {
 	  try {
 	    var r = require;
-	    var vertx = __webpack_require__(599);
+	    var vertx = __webpack_require__(600);
 	    vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	    return useVertxTimer();
 	  } catch (e) {
@@ -44931,14 +45005,14 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(301), (function() { return this; }())))
 
 /***/ }),
-/* 599 */
+/* 600 */
 /***/ (function(module, exports) {
 
 	/* (ignored) */
 
 /***/ }),
-/* 600 */,
-/* 601 */
+/* 601 */,
+/* 602 */
 /***/ (function(module, exports, __webpack_require__, __webpack_module_template_argument_0__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
