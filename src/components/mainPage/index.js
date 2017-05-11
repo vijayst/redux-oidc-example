@@ -7,7 +7,12 @@ import ChannelInfo from '../channelInfo';
 class MainPage extends React.Component {
   // load the subscriptions
   componentWillMount() {
+     this.setState({ loading: true });
     this.props.dispatch(loadSubscriptionsStart());
+    .then(() => {
+        console.log('Promise is working.');
+        this.setState({ loading: false });
+    });
   }
 
   // display the current user
